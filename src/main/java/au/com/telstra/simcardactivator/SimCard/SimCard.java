@@ -1,11 +1,11 @@
 package au.com.telstra.simcardactivator.SimCard;
 
 public class SimCard {
-    
+
     private String iccid;
     private String customerEmail;
     private boolean activated;
-    
+
     public SimCard(String iccid, String customerEmail, boolean activated) {
         this.iccid = iccid;
         this.customerEmail = customerEmail;
@@ -16,7 +16,6 @@ public class SimCard {
         this.iccid = iccid;
         this.customerEmail = customerEmail;
     }
-
 
     public SimCard(String iccid) {
         this.iccid = iccid;
@@ -49,13 +48,9 @@ public class SimCard {
         this.activated = activated;
     }
 
-
     @Override
     public String toString() {
         return "SimCard [iccid=" + iccid + ", customerEmail=" + customerEmail + ", activated=" + activated + "]";
     }
- 
-
-
 
 }
