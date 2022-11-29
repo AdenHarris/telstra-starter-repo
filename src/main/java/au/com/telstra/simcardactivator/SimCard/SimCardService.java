@@ -1,7 +1,6 @@
 package au.com.telstra.simcardactivator.SimCard;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,27 +13,31 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class SimCardService {
 
-    public List<SimCard> getSimCards() {
-        return SimCards;
+    private final SimCardRepository simcardRepository;
+
+    @Autowired
+    public SimCardService(SimCardRepository simcardRepository)
+    {
+        this.simcardRepository = simcardRepository;
     }
 
-    public List<SimCard> SimCards = new ArrayList<>(
-            Arrays.asList(
-                    new SimCard(
-                            "1",
-                            "SimCard1@gmail.com")));
+    public Iterable<SimCard> getSimCards() {
 
-    public List<SimCard> recieveSimCard(SimCard postRequest) {
-        SimCards.add(postRequest);
-        return SimCards;
+        return simcardRepository.findAll();
     }
 
-    public void sendSimCard() throws IOException {
+    public SimCard getSimCardById(long simCardId) {
+        
+        return simcardRepository.findById(simCardId); 
+    }
 
-        for (int i = 0; i < SimCards.size(); i++) {
-            if (SimCards.get(i).isActivated()) {
-                continue;
-            }
+    public void saveSimCardToDatabase(SimCard simcard)
+    {
+        simcardRepository.save(simcard);
+    }
+
+    public void sendSimCard(SimCard simCard) throws IOException {
+
             URL url = new URL("http://localhost:8444/actuate");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
 
@@ -43,7 +46,7 @@ public class SimCardService {
             http.setRequestProperty("Accept", "application/json");
             http.setRequestProperty("Content-Type", "application/json");
 
-            String data = String.format("{\"iccid\": \"%s\"}", SimCards.get(i).getIccid());
+            String data = String.format("{\"iccid\": \"%s\"}", simCard.getIccid());
             byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
             OutputStream stream = http.getOutputStream();
@@ -65,9 +68,8 @@ public class SimCardService {
             System.out.println(response.toString());
 
             if (responseCode == 200) {
-                SimCards.get(i).setActivated(true);
+                simCard.setActive(true);
             }
             http.disconnect();
         }
     }
-}

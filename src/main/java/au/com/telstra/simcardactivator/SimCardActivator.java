@@ -1,11 +1,7 @@
 package au.com.telstra.simcardactivator;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-
-
 
 @SpringBootApplication
 public class SimCardActivator {
@@ -14,6 +10,4 @@ public class SimCardActivator {
         SpringApplication.run(SimCardActivator.class, args);
         
     }
-
-
 }

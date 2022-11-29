@@ -1,7 +1,7 @@
 package au.com.telstra.simcardactivator.SimCard;
 import java.io.IOException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,16 +19,23 @@ public class SimCardController {
     }
 
     @RequestMapping(path = "simcard")
-    public List<SimCard> getSimCards() {
+    public Iterable<SimCard> getSimCards() {
 
         return simCardService.getSimCards();
+    }
+
+    @RequestMapping(path = "simcard/{id}")
+    public SimCard getSimCardById(@PathVariable("id") long simCardId) {
+
+        return simCardService.getSimCardById(simCardId);
     }
 
     @RequestMapping(path = "recieve")
     public void recieveSimCards(@RequestBody SimCard simCard) throws IOException {
 
-        simCardService.recieveSimCard(simCard);
-        simCardService.sendSimCard();
-
+        simCardService.sendSimCard(simCard);
+        simCardService.saveSimCardToDatabase(simCard);
+        
+        
     }
 }

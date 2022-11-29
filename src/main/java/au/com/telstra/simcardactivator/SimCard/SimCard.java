@@ -1,15 +1,28 @@
 package au.com.telstra.simcardactivator.SimCard;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class SimCard {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @JsonIgnore
+    private Long id;
     private String iccid;
     private String customerEmail;
-    private boolean activated;
+    private boolean active;
 
-    public SimCard(String iccid, String customerEmail, boolean activated) {
+    
+    public SimCard(String iccid, String customerEmail, boolean active) {
         this.iccid = iccid;
         this.customerEmail = customerEmail;
-        this.activated = activated;
+        this.active = active;
     }
 
     public SimCard(String iccid, String customerEmail) {
@@ -21,7 +34,15 @@ public class SimCard {
         this.iccid = iccid;
     }
 
-    public SimCard() {
+    protected SimCard() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getIccid() {
@@ -40,17 +61,17 @@ public class SimCard {
         this.customerEmail = customerEmail;
     }
 
-    public boolean isActivated() {
-        return activated;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
+    public void setActive(boolean active) {
+        this.active = active;
     }
-
+    
     @Override
     public String toString() {
-        return "SimCard [iccid=" + iccid + ", customerEmail=" + customerEmail + ", activated=" + activated + "]";
+        return "SimCard [id="+ id +", iccid=" + iccid + ", customerEmail=" + customerEmail + ", active=" + active + "]";
     }
 
 }
