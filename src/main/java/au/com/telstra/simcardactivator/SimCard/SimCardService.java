@@ -53,6 +53,7 @@ public class SimCardService {
             stream.write(out);
 
             int responseCode = http.getResponseCode();
+
             System.out.println("POST Response Code :: " + responseCode);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
@@ -60,14 +61,14 @@ public class SimCardService {
             StringBuffer response = new StringBuffer();
 
             while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
+                response.append(inputLine);;
+            } 
             in.close();
 
             // print result
             System.out.println(response.toString());
 
-            if (responseCode == 200) {
+            if (response.toString().matches(".+true.+")) {
                 simCard.setActive(true);
             }
             http.disconnect();
